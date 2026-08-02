@@ -1,61 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monarquia Parlamentarista de Arísia - Candidatura a Representante</title>
+    <title>Representantes de Arísia</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="https://storage.minecart.com.br/9d62991dad2e96532cd4f95128ca2c39_arisia.png">
+    <link rel="icon" type="image/png"
+        href="https://storage.minecart.com.br/9d62991dad2e96532cd4f95128ca2c39_arisia.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Teko:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Teko:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #111827;
         }
+
         .font-teko {
             font-family: 'Teko', sans-serif;
         }
+
         .gradient-text {
             background: linear-gradient(to right, #7eff92, #00930a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .card {
             background-color: #1f2937;
             border: 1px solid #374151;
             border-radius: 0.75rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.2), 0 4px 6px -2px rgba(34, 197, 94, 0.1); /* Sombra verde */
+            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.2), 0 4px 6px -2px rgba(34, 197, 94, 0.1);
+            /* Sombra verde */
         }
+
         .form-input {
             background-color: #374151;
             border: 1px solid #4b5563;
             color: #d1d5db;
         }
+
         .form-input:focus {
             outline: none;
-            border-color: #4ade80; /* green-400 */
+            border-color: #4ade80;
+            /* green-400 */
             box-shadow: 0 0 0 2px #4ade80;
         }
+
         .btn-submit {
-            background: linear-gradient(to right, #4ade80, #16a34a); 
+            background: linear-gradient(to right, #4ade80, #16a34a);
             transition: all 0.3s ease;
         }
+
         .btn-submit:hover {
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
         }
+
         .btn-submit:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: scale(1);
             box-shadow: none;
         }
+
         #privacidade-aviso {
             max-width: 600px;
             margin-top: 2rem;
@@ -63,13 +78,14 @@
         }
     </style>
 </head>
+
 <body class="text-gray-200">
 
     <!-- Header -->
     <header class="text-center py-12 md:py-20 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
         <div class="container mx-auto px-4">
             <h1 class="font-teko text-6xl md:text-8xl font-bold tracking-wider uppercase">
-                <span class="gradient-text">Parlamento de Arísia</span>
+                <span class="gradient-text">Representantes de Arísia</span>
             </h1>
             <p class="mt-2 text-xl md:text-2xl text-gray-400">A sua voz para construir o futuro..</p>
         </div>
@@ -81,16 +97,19 @@
         <section class="text-center max-w-4xl mx-auto">
             <h2 class="font-teko text-4xl md:text-5xl font-bold text-white mb-4">👑 CANDIDATURA PARA REPRESENTANTE DA NAÇÃO 👑</h2>
             <p class="text-lg text-gray-300 leading-relaxed">
-                O governo de Arísia abre as portas para votações para eleger seus <b>3 Representantes</b>, responsáveis pela gestão e criação de leis e projetos para as secretarias e o povo. Sua chance de moldar o futuro de Arísia começa aqui.
+                O governo de Arísia abre as portas para votações para eleger seus <b>2</b> Representantes, responsáveis
+                pela
+                gestão e criação de leis e projetos para as secretarias e o povo. Sua chance de moldar o futuro de
+                Arísia começa aqui.
             </p>
         </section>
 
         <!-- Main Info Grid - Refletindo a Nova Estrutura -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-16">
 
             <!-- Posição e Mandato -->
             <div class="card p-6">
-                <h3 class="font-teko text-3xl font-bold text-green-400 mb-4">🏆 Representantes (3 Vagas)</h3>
+                <h3 class="font-teko text-3xl font-bold text-green-400 mb-4">🏆 Representantes (2 Vagas)</h3>
                 <ul class="space-y-3 text-gray-300 list-disc list-inside">
                     <li>Poder máximo eleito por <b>Votação Popular</b>.</li>
                     <li>Mandato de <b>3 meses</b> (sujeito a Impeachment).</li>
@@ -104,17 +123,19 @@
                 <h3 class="font-teko text-3xl font-bold text-yellow-400 mb-4">🗳️ Poder Legislativo</h3>
                 <ul class="space-y-3 text-gray-300 list-disc list-inside">
                     <li>Os <b>3 Representantes</b> podem propor e votar em projetos de lei.</li>
-                    <li>Projetos exigem <b>maioria de votos (2/3)</b> para aprovação.</li>
-                    <li>Votos negativos devem ser <b>justificados</b> para que o projeto possa ser <b>reelaborado</b>.</li>
+                    <li>Projetos exigem <b>consenso entre os representantes</b> para aprovação.</li>
+                    <li>Votos negativos devem ser <b>justificados</b> para que o projeto possa ser <b>reelaborado</b>.
+                    </li>
                     <li>O Representante Proponente deve <b>assumir a implementação</b> do projeto aprovado.</li>
                 </ul>
             </div>
-            
+
             <div class="card p-6">
                 <h3 class="font-teko text-3xl font-bold text-red-500 mb-4">⚖️ Processo de Impeachment</h3>
                 <ul class="space-y-3 text-gray-300 list-disc list-inside">
                     <li>O <b>Primeiro Secretário</b> é responsável por ouvir as demandas de cidadãos e secretários.</li>
-                    <li>Havendo reclamações suficientes, o Primeiro Secretário deve organizar uma <b>votação oficial</b>.</li>
+                    <li>Havendo reclamações suficientes, o Primeiro Secretário deve organizar uma <b>votação
+                            oficial</b>.</li>
                     <li>Confirmada a remoção, o <b>próximo candidato da lista</b> (suplente) assume o cargo.</li>
                     <li>O novo representante exercerá as funções apenas pelo <b>restante do mandato</b> original.</li>
                 </ul>
@@ -140,7 +161,8 @@
             <p class="text-lg text-gray-300 leading-relaxed">
                 Candidatos, preencham o formulário abaixo com atenção. Demonstrem o seu compromisso.<br>
                 Caso houverem apenas 3 cadastros até a data limite eles serão eleitos sem necessidade de votação. <br>
-                A administração não irá se envolver nos projetos dos representantes salvo em casos extremos prejudiciais a Arísia.
+                A administração não irá se envolver nos projetos dos representantes salvo em casos extremos prejudiciais
+                a Arísia.
             </p>
             <div class="flex items-center justify-center text-xs text-gray-400 pt-2">
                 <p>Limite de 1 inscrição por jogador, excesso de inscrições poderam gerar desclassificação</p>
@@ -150,68 +172,83 @@
         <!-- Deadline -->
         <div class="text-center mt-12">
             <div class="inline-block bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
-                <span class="text-2xl">📅 Prazo para Inscrição: <span class="font-mono">13/03/2026</span></span>
+                <span class="text-2xl">📅 Prazo para Inscrição: <span class="font-mono">xx/xx/xxxx</span></span>
             </div>
         </div>
 
         <!-- Application Form -->
         <section id="form-section" class="mt-20 max-w-2xl mx-auto">
-              <!-- SEÇÃO DE ENVIOS ENCERRADOS - Para reativar o formulário, comente ou remova esta seção -->
+            <!-- SEÇÃO DE ENVIOS ENCERRADOS - Para reativar o formulário, comente ou remova esta seção -->
             <div id="closed-message" class="card p-8 text-center hidden">
                 <h2 class="font-teko text-4xl font-bold text-red-400 mb-4">Envios Encerrados</h2>
-                <p class="text-gray-300 text-lg">O período de candidaturas para Representante da Nação foi encerrado. Aguarde a Votação Popular!</p>
+                <p class="text-gray-300 text-lg">O período de candidaturas para Representante da Nação foi encerrado.
+                    Aguarde a Votação Popular!</p>
             </div>
             <!-- FIM DA SEÇÃO DE ENVIOS ENCERRADOS -->
-            
+
 
 
             <div id="form-wrapper" class="card p-8">
-                <h2 class="font-teko text-4xl font-bold text-center mb-6 gradient-text">Formulário de Candidatura Individual</h2>
+                <h2 class="font-teko text-4xl font-bold text-center mb-6 gradient-text">Formulário de Candidatura
+                    Individual</h2>
                 <div id="form-container">
-                    <form id="party-form" class="space-y-6"> 
+                    <form id="party-form" class="space-y-6">
                         <!-- CAMPO OCULTO PARA O IP -->
                         <input type="hidden" name="Endereço IP" id="ip-address">
 
                         <div>
-                            <label for="representative-name" class="block text-sm font-medium text-gray-300 mb-1">Nome do Candidato</label>
-                            <input type="text" id="representative-name" name="Nome do Candidato" required class="w-full form-input rounded-md p-2">
+                            <label for="representative-name" class="block text-sm font-medium text-gray-300 mb-1">Nome
+                                do Candidato</label>
+                            <input placeholder="Odisseu" type="text" id="representative-name" name="Nome do Candidato" required
+                                class="w-full form-input rounded-md p-2">
                         </div>
-                        
+
                         <div>
-                            <label for="ingame-nick" class="block text-sm font-medium text-gray-300 mb-1">Nick in-game</label>
-                            <input type="text" id="ingame-nick" name="Nick" required class="w-full form-input rounded-md p-2">
+                            <label for="ingame-nick" class="block text-sm font-medium text-gray-300 mb-1">Nick
+                                in-game</label>
+                            <input placeholder="odisseu_itica_600" type="text" id="ingame-nick" name="Nick" required
+                                class="w-full form-input rounded-md p-2">
                         </div>
                         <div>
-                            <label for="discord-id" class="block text-sm font-medium text-gray-300 mb-1">Discord (para contato)</label>
-                            <input type="text" id="discord-id" name="Discord" required class="w-full form-input rounded-md p-2">
+                            <label for="discord-id" class="block text-sm font-medium text-gray-300 mb-1">Discord (para
+                                contato)</label>
+                            <input placeholder="odisseu#0000" type="text" id="discord-id" name="Discord" required
+                                class="w-full form-input rounded-md p-2">
                         </div>
 
                         <!-- AVISO DE PRIVACIDADE -->
                         <div class="flex items-center justify-center text-xs text-gray-400 pt-2">
                             <input type="checkbox" id="privacidade-box" name="Privacidade" required class="mr-2">
                             <label for="privacidade-box" class="cursor-pointer">
-                                Afirmo que os dados fornecidos para a candidatura são reais e que compreendo os deveres e responsabilidades do cargo.
+                                Afirmo que os dados fornecidos para a candidatura são reais e que compreendo os deveres
+                                e responsabilidades do cargo.
                             </label>
                         </div>
                         <div class="text-center">
-                            <button type="submit" id="submit-button" class="btn-submit text-white font-bold py-3 px-8 rounded-full text-lg w-full md:w-auto">
+                            <button type="submit" id="submit-button"
+                                class="btn-submit text-white font-bold py-3 px-8 rounded-full text-lg w-full md:w-auto">
                                 Candidatar-se a Representante
                             </button>
                         </div>
 
                         <div class="flex items-center justify-center text-xs text-gray-400 pt-2" id="privacidade-aviso">
-                            <p>Ao clicar em Enviar, você concorda que os dados informados serão analizados pela administração do servidor. Sua inscrição será confirmada quando uma mensagem for enviada no seu Discord por um administrador. Seu endereço de IP será registrado junto ao formulário para fins de segurança e moderação da comunidade.</p>
+                            <p>Ao clicar em Enviar, você concorda que os dados informados serão analizados pela
+                                administração do servidor. Sua inscrição será confirmada quando uma mensagem for enviada
+                                no seu Discord por um administrador. Seu endereço de IP será registrado junto ao
+                                formulário para fins de segurança e moderação da comunidade.</p>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div id="confirmation-message" class="hidden text-center">
                     <h3 class="font-teko text-3xl text-green-400 font-bold mb-4">Candidatura Enviada!</h3>
-                    <p class="text-gray-300">Sua candidatura foi recebida com sucesso. Aguarde a confirmação e o início da campanha eleitoral. Boa sorte!</p>
+                    <p class="text-gray-300">Sua candidatura foi recebida com sucesso. Aguarde a confirmação e o início
+                        da campanha eleitoral. Boa sorte!</p>
                 </div>
                 <div id="error-message" class="hidden text-center">
                     <h3 class="font-teko text-3xl text-red-400 font-bold mb-4">Ocorreu um Erro</h3>
-                    <p class="text-gray-300">Não foi possível enviar sua candidatura. Por favor, tente novamente mais tarde. Se o problema persistir, contate um administrador.</p>
+                    <p class="text-gray-300">Não foi possível enviar sua candidatura. Por favor, tente novamente mais
+                        tarde. Se o problema persistir, contate um administrador.</p>
                 </div>
             </div>
         </section>
@@ -228,7 +265,7 @@
         // Altere o valor para false ou 0 para ABRIR as inscrições.
         // Altere o valor para true ou 1 para ENCERRAR as inscrições.
         // MUDANÇA: Abrindo as candidaturas para o novo modelo
-        const encerrado = true; 
+        const encerrado = false;
 
         const closedMessage = document.getElementById('closed-message');
         const formWrapper = document.getElementById('form-wrapper');
@@ -271,12 +308,12 @@
         submitButton.disabled = true;
 
         // Adiciona um "ouvinte" para a caixa de seleção
-        privacyCheckbox.addEventListener('change', function() {
+        privacyCheckbox.addEventListener('change', function () {
             // Habilita ou desabilita o botão com base se a caixa está marcada
             submitButton.disabled = !this.checked;
         });
 
-        form.addEventListener('submit', async function(event) {
+        form.addEventListener('submit', async function (event) {
             event.preventDefault(); // Impede o envio padrão do formulário.
 
             // Desabilita o botão para evitar envios múltiplos
@@ -285,9 +322,9 @@
 
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            
+
             // Site para Receber os formulários: https://formspree.io/
-            const formspreeEndpoint = 'https://formspree.io/f/xovlwjql'; 
+            const formspreeEndpoint = 'https://formspree.io/f/xovlwjql';
 
             try {
                 const response = await fetch(formspreeEndpoint, {
@@ -312,15 +349,16 @@
                 console.error('Erro ao enviar o formulário:', error);
                 // Mostra a mensagem de erro
                 formContainer.classList.add('hidden');
-                    // Reverte o botão e mostra a mensagem de erro
-                    errorMessage.classList.remove('hidden');
-                    // MUDANÇA: Texto do botão revertido no erro
-                    submitButton.textContent = 'Candidatar-se a Representante'; 
-                    submitButton.disabled = false;
+                // Reverte o botão e mostra a mensagem de erro
+                errorMessage.classList.remove('hidden');
+                // MUDANÇA: Texto do botão revertido no erro
+                submitButton.textContent = 'Candidatar-se a Representante';
+                submitButton.disabled = false;
             }
         });
         // --- FIM DA LÓGICA DO FORMULÁRIO ---
     </script>
 
 </body>
+
 </html>
