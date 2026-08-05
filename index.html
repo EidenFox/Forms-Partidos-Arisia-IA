@@ -77,9 +77,24 @@
             text-align: center;
         }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body class="text-gray-200">
+
+    <!-- Menu Superior de Autenticação -->
+    <div class="absolute top-4 right-4 z-50 flex gap-4 items-center" id="auth-nav">
+        <a href="login.html" id="btn-login-nav"
+            class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md transition-colors border border-gray-600 text-sm hidden">Login</a>
+        <div id="user-info-nav"
+            class="hidden flex items-center gap-4 bg-gray-900 bg-opacity-80 p-2 rounded-md border border-gray-700">
+            <span id="user-name-display" class="text-green-400 text-sm font-bold"></span>
+            <a href="candidatos.html"
+                class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-3 rounded-md transition-colors text-sm">Candidatos</a>
+            <button id="btn-logout" class="text-red-400 hover:text-red-300 text-sm font-bold underline">Sair</button>
+        </div>
+    </div>
 
     <!-- Header -->
     <header class="text-center py-12 md:py-20 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
@@ -95,7 +110,8 @@
 
         <!-- Introduction -->
         <section class="text-center max-w-4xl mx-auto">
-            <h2 class="font-teko text-4xl md:text-5xl font-bold text-white mb-4">👑 CANDIDATURA PARA REPRESENTANTE DA NAÇÃO 👑</h2>
+            <h2 class="font-teko text-4xl md:text-5xl font-bold text-white mb-4">👑 CANDIDATURA PARA REPRESENTANTE DA
+                NAÇÃO 👑</h2>
             <p class="text-lg text-gray-300 leading-relaxed">
                 O governo de Arísia abre as portas para votações para eleger seus <b>2</b> Representantes, responsáveis
                 pela
@@ -122,7 +138,7 @@
             <div class="card p-6">
                 <h3 class="font-teko text-3xl font-bold text-yellow-400 mb-4">🗳️ Poder Legislativo</h3>
                 <ul class="space-y-3 text-gray-300 list-disc list-inside">
-                    <li>Os <b>3 Representantes</b> podem propor e votar em projetos de lei.</li>
+                    <li>Os <b>Representantes</b> podem propor e votar em projetos de lei.</li>
                     <li>Projetos exigem <b>consenso entre os representantes</b> para aprovação.</li>
                     <li>Votos negativos devem ser <b>justificados</b> para que o projeto possa ser <b>reelaborado</b>.
                     </li>
@@ -160,12 +176,13 @@
             <h2 class="font-teko text-4xl md:text-5xl font-bold text-white mb-4">SEJA A VOZ DO POVO DE ARÍSIA!</h2>
             <p class="text-lg text-gray-300 leading-relaxed">
                 Candidatos, preencham o formulário abaixo com atenção. Demonstrem o seu compromisso.<br>
-                Caso houverem apenas 3 cadastros até a data limite eles serão eleitos sem necessidade de votação. <br>
+                Caso haja apenas 2 candidaturas até a data limite, elas serão analisadas podendo eleitos sem necessidade
+                de votação. <br>
                 A administração não irá se envolver nos projetos dos representantes salvo em casos extremos prejudiciais
                 a Arísia.
             </p>
             <div class="flex items-center justify-center text-xs text-gray-400 pt-2">
-                <p>Limite de 1 inscrição por jogador, excesso de inscrições poderam gerar desclassificação</p>
+                <p>Limite de 1 inscrição por jogador, excesso de inscrições poderá gerar desclassificação</p>
             </div>
         </section>
 
@@ -199,8 +216,8 @@
                         <div>
                             <label for="representative-name" class="block text-sm font-medium text-gray-300 mb-1">Nome
                                 do Candidato</label>
-                            <input placeholder="Odisseu" type="text" id="representative-name" name="Nome do Candidato" required
-                                class="w-full form-input rounded-md p-2">
+                            <input placeholder="Odisseu" type="text" id="representative-name" name="Nome do Candidato"
+                                required class="w-full form-input rounded-md p-2">
                         </div>
 
                         <div>
@@ -225,14 +242,14 @@
                             </label>
                         </div>
                         <div class="text-center">
-                            <button type="submit" id="submit-button"
+                            <button type="submit" id="submit-button" disabled
                                 class="btn-submit text-white font-bold py-3 px-8 rounded-full text-lg w-full md:w-auto">
                                 Candidatar-se a Representante
                             </button>
                         </div>
 
                         <div class="flex items-center justify-center text-xs text-gray-400 pt-2" id="privacidade-aviso">
-                            <p>Ao clicar em Enviar, você concorda que os dados informados serão analizados pela
+                            <p>Ao clicar em Enviar, você concorda que os dados informados serão analisados pela
                                 administração do servidor. Sua inscrição será confirmada quando uma mensagem for enviada
                                 no seu Discord por um administrador. Seu endereço de IP será registrado junto ao
                                 formulário para fins de segurança e moderação da comunidade.</p>
@@ -266,6 +283,10 @@
         // Altere o valor para true ou 1 para ENCERRAR as inscrições.
         // MUDANÇA: Abrindo as candidaturas para o novo modelo
         const encerrado = false;
+
+        const supabaseUrl = 'https://gaejvymnzwvhwkehopoi.supabase.co';
+        const supabaseKey = 'sb_publishable_hx5Squj4TZDF8P8TaXp7uw_etpAVIGc'; // Insira sua chave publishable aqui
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         const closedMessage = document.getElementById('closed-message');
         const formWrapper = document.getElementById('form-wrapper');
@@ -327,6 +348,7 @@
             const formspreeEndpoint = 'https://formspree.io/f/xovlwjql';
 
             try {
+                // Envio para o Formspree
                 const response = await fetch(formspreeEndpoint, {
                     method: 'POST',
                     body: JSON.stringify(data),
@@ -336,14 +358,25 @@
                     }
                 });
 
-                if (response.ok) {
-                    // Sucesso! Mostra a mensagem de confirmação.
+                // Envio para o Supabase
+                const { error: supabaseError } = await supabaseClient
+                    .from('candidaturas_representante')
+                    .insert([
+                        {
+                            nome_candidato: data['Nome do Candidato'],
+                            nick_ingame: data['Nick'],
+                            discord_id: data['Discord'],
+                            endereco_ip: data['Endereço IP']
+                        }
+                    ]);
+
+                if (response.ok && !supabaseError) {
                     formContainer.classList.add('hidden');
                     confirmationMessage.classList.remove('hidden');
                     errorMessage.classList.add('hidden');
                 } else {
-                    // Trata erros de validação ou do servidor do Formspree
-                    throw new Error('Falha no envio para o servidor.');
+                    if (supabaseError) console.error('Erro no Supabase:', supabaseError);
+                    throw new Error('Falha no envio para o servidor ou banco de dados.');
                 }
             } catch (error) {
                 console.error('Erro ao enviar o formulário:', error);
@@ -357,6 +390,34 @@
             }
         });
         // --- FIM DA LÓGICA DO FORMULÁRIO ---
+
+        /* INICIO DE FUNÇÃO DE [Verificação de Sessão]; esta função faz [A leitura do armazenamento local para checar se o usuário está logado e exibe o menu correspondente] */
+        async function checkAuthStatus() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const btnLogin = document.getElementById('btn-login-nav');
+            const userInfo = document.getElementById('user-info-nav');
+            const nameDisplay = document.getElementById('user-name-display');
+
+            if (session) {
+                btnLogin.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                // Recupera o nome dos metadados, ou usa 'Administrador' como fallback
+                const userName = session.user.user_metadata?.name || 'Administrador';
+                nameDisplay.textContent = `Olá, ${userName}`;
+            } else {
+                btnLogin.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+            }
+        }
+
+        /* INICIO DE FUNÇÃO DE [Logout]; esta função faz [O encerramento da sessão no Supabase e recarregamento da página] */
+        document.getElementById('btn-logout')?.addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        });
+
+        checkAuthStatus();
+
     </script>
 
 </body>

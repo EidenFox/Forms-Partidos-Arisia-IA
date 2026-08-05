@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Administração Arísia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="icon" type="image/png"
+        href="https://storage.minecart.com.br/9d62991dad2e96532cd4f95128ca2c39_arisia.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Teko:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+        }
+
+        .font-teko {
+            font-family: 'Teko', sans-serif;
+        }
+
+        .card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+        }
+
+        .form-input {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #d1d5db;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 2px #4ade80;
+        }
+
+        .btn-submit {
+            background: linear-gradient(to right, #4ade80, #16a34a);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #4ade80;
+            color: #4ade80;
+        }
+
+        .tab-inactive {
+            color: #9ca3af;
+        }
+
+        .tab-inactive:hover {
+            color: #d1d5db;
+        }
+    </style>
+</head>
+
+<body class="text-gray-200 flex items-center justify-center min-h-screen">
+
+    <div class="card p-8 w-full max-w-md mx-4">
+        <h2 class="font-teko text-5xl font-bold text-center mb-6 text-green-400">Acesso Restrito</h2>
+
+        <div class="flex mb-6 border-b border-gray-700">
+            <button id="tab-login"
+                class="flex-1 pb-2 text-center font-bold tab-active transition-colors duration-200">Login</button>
+            <button id="tab-senha"
+                class="flex-1 pb-2 text-center font-bold tab-inactive transition-colors duration-200">Trocar
+                Senha</button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-mail</label>
+                <input type="email" id="email" required class="w-full form-input rounded-md p-2">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Senha</label>
+                <input type="password" id="password" required class="w-full form-input rounded-md p-2">
+            </div>
+
+            <div id="login-erro-msg" class="hidden text-center text-red-500 text-sm font-bold">Credenciais inválidas.
+            </div>
+
+            <button type="submit" id="login-btn" class="btn-submit text-white font-bold py-3 px-8 rounded-md w-full">
+                Entrar
+            </button>
+        </form>
+
+        <!-- Formulário de Troca de Senha -->
+        <form id="senha-form" class="space-y-6 hidden">
+            <div>
+                <label for="email-senha" class="block text-sm font-medium text-gray-300 mb-1">E-mail</label>
+                <input type="email" id="email-senha" required class="w-full form-input rounded-md p-2">
+            </div>
+            <div>
+                <label for="old-password" class="block text-sm font-medium text-gray-300 mb-1">Senha Atual</label>
+                <input type="password" id="old-password" required class="w-full form-input rounded-md p-2">
+            </div>
+            <div>
+                <label for="new-password" class="block text-sm font-medium text-gray-300 mb-1">Nova Senha</label>
+                <input type="password" id="new-password" required class="w-full form-input rounded-md p-2">
+            </div>
+
+            <div id="senha-msg" class="hidden text-center text-sm font-bold"></div>
+
+            <button type="submit" id="senha-btn" class="btn-submit text-white font-bold py-3 px-8 rounded-md w-full">
+                Atualizar Senha
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const supabaseUrl = 'https://gaejvymnzwvhwkehopoi.supabase.co';
+        const supabaseKey = 'sb_publishable_hx5Squj4TZDF8P8TaXp7uw_etpAVIGc';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const tabLogin = document.getElementById('tab-login');
+        const tabSenha = document.getElementById('tab-senha');
+        const formLogin = document.getElementById('login-form');
+        const formSenha = document.getElementById('senha-form');
+
+        /* INICIO DE FUNÇÃO DE [Alternância de Abas]; esta função faz [A troca visual entre o formulário de login e o formulário de troca de senha] */
+        function toggleTabs(showLogin) {
+            if (showLogin) {
+                formLogin.classList.remove('hidden');
+                formSenha.classList.add('hidden');
+                tabLogin.classList.replace('tab-inactive', 'tab-active');
+                tabSenha.classList.replace('tab-active', 'tab-inactive');
+            } else {
+                formLogin.classList.add('hidden');
+                formSenha.classList.remove('hidden');
+                tabLogin.classList.replace('tab-active', 'tab-inactive');
+                tabSenha.classList.replace('tab-inactive', 'tab-active');
+            }
+        }
+
+        tabLogin.addEventListener('click', () => toggleTabs(true));
+        tabSenha.addEventListener('click', () => toggleTabs(false));
+
+        /* INICIO DE FUNÇÃO DE [Autenticação de Usuário]; esta função faz [O envio das credenciais para o Supabase Auth e redireciona para a página de administração em caso de sucesso] */
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('login-btn');
+            const erroMsg = document.getElementById('login-erro-msg');
+
+            btn.disabled = true;
+            btn.textContent = 'Autenticando...';
+            erroMsg.classList.add('hidden');
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                erroMsg.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Entrar';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        /* INICIO DE FUNÇÃO DE [Troca de Senha]; esta função faz [A autenticação do usuário com a senha atual e em seguida solicita a atualização para a nova senha] */
+        async function handleChangePassword(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email-senha').value;
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const btn = document.getElementById('senha-btn');
+            const msgBox = document.getElementById('senha-msg');
+
+            btn.disabled = true;
+            btn.textContent = 'Atualizando...';
+            msgBox.classList.add('hidden');
+            msgBox.className = 'text-center text-sm font-bold mb-4';
+
+            const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: oldPassword
+            });
+
+            if (signInError) {
+                msgBox.textContent = 'Senha atual incorreta ou usuário não encontrado.';
+                msgBox.classList.add('text-red-500');
+                msgBox.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Atualizar Senha';
+                return;
+            }
+
+            const { data: updateData, error: updateError } = await supabaseClient.auth.updateUser({
+                password: newPassword
+            });
+
+            if (updateError) {
+                msgBox.textContent = 'Erro ao atualizar a senha. Tente uma senha mais forte.';
+                msgBox.classList.add('text-red-500');
+                msgBox.classList.remove('hidden');
+            } else {
+                msgBox.textContent = 'Senha atualizada com sucesso!';
+                msgBox.classList.add('text-green-400');
+                msgBox.classList.remove('hidden');
+                document.getElementById('senha-form').reset();
+
+                await supabaseClient.auth.signOut();
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Atualizar Senha';
+        }
+
+        formLogin.addEventListener('submit', handleLogin);
+        formSenha.addEventListener('submit', handleChangePassword);
+    </script>
+</body>
+
+</html>
