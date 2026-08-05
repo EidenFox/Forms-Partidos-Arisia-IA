@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Candidatos - Arísia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Teko:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Teko:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #111827; }
-        .font-teko { font-family: 'Teko', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+        }
+
+        .font-teko {
+            font-family: 'Teko', sans-serif;
+        }
     </style>
 </head>
+
 <body class="text-gray-200">
+
+    <!-- Overlay de Verificação -->
+    <div id="auth-overlay"
+        class="fixed inset-0 bg-gray-900 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+        <svg class="animate-spin h-16 w-16 text-green-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+        </svg>
+        <h2 id="ver-acesso" class="font-teko text-4xl font-bold text-white tracking-wider">Verificando acesso...</h2>
+    </div>
+
 
     <!-- Header Superior (Navegação) -->
     <div class="absolute top-4 right-4 z-50 flex gap-4 items-center">
-        <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md transition-colors border border-gray-600 text-sm">Voltar ao Início</a>
+        <a href="index.html"
+            class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md transition-colors border border-gray-600 text-sm">Voltar
+            ao Início</a>
         <button id="btn-logout" class="text-red-400 hover:text-red-300 text-sm font-bold underline">Sair</button>
     </div>
 
@@ -28,9 +53,9 @@
     <main class="container mx-auto px-4 py-12 max-w-6xl">
         <div id="loading" class="text-center text-gray-400 text-xl font-bold">Carregando lista de candidatos...</div>
         <div id="erro-msg" class="hidden text-center text-red-500 text-xl font-bold">Erro ao carregar a lista.</div>
-        
+
         <div id="tabelas-container" class="hidden space-y-12">
-            
+
             <!-- Tabela Confirmados -->
             <div>
                 <h2 class="font-teko text-3xl font-bold text-green-400 mb-4">Confirmados</h2>
@@ -84,7 +109,7 @@
         /* INICIO DE FUNÇÃO DE [Atualização de Status]; esta função faz [A alteração do campo confirmado no banco de dados e recarrega as listas para mover o candidato de tabela] */
         async function updateStatus(id, value) {
             const isConfirmed = value === 'true';
-            
+
             // Desabilita o select temporariamente durante a atualização
             const selectElement = document.querySelector(`select[data-id="${id}"]`);
             if (selectElement) selectElement.disabled = true;
@@ -106,7 +131,7 @@
         /* INICIO DE FUNÇÃO DE [Gerador de Linhas da Tabela]; esta função faz [A criação do HTML de uma linha de tabela (`<tr>`) formatada com os dados do candidato] */
         function createTableRow(candidato) {
             const dataCriacao = new Date(candidato.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-            
+
             return `
                 <tr class="hover:bg-gray-800 transition-colors">
                     <td class="p-4">${candidato.nome_candidato}</td>
@@ -162,16 +187,46 @@
             }
         }
 
-        /* INICIO DE FUNÇÃO DE [Proteção de Rota e Inicialização]; esta função faz [A checagem da sessão ativa; se logado, carrega os dados, se não, redireciona para a página principal] */
+        /* INICIO DE FUNÇÃO DE [Proteção de Rota e Inicialização]; esta função faz [A exibição do overlay, checagem da sessão ativa com timeout de 3s para redirecionamento ao index ou liberação de acesso simultânea ao carregamento dos dados] */
         async function initAdminPage() {
+            const startTime = Date.now();
+            const overlay = document.getElementById('auth-overlay');
+            const maxWait = 3000;
+            const sairbtn = document.getElementById('btn-logout')
+
             const { data: { session } } = await supabaseClient.auth.getSession();
-            
+
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, maxWait - elapsedTime);
+
             if (!session) {
-                window.location.href = 'index.html';
+                console.log("offline");
+                setTimeout(() => {
+                    document.getElementById("ver-acesso").innerHTML = "ACESSO NEGADO";
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                }, remainingTime);
                 return;
             }
-            
-            fetchCandidatos();
+
+            const fetchPromise = fetchCandidatos().then(() => {
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 500);
+            });
+
+            // sairbtn.classList.remove('hidden');
+            const timeoutPromise = new Promise(resolve => {
+                setTimeout(() => {
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        resolve();
+                    }, 500);
+                }, remainingTime);
+            });
+
+            await Promise.race([fetchPromise, timeoutPromise]);
         }
 
         /* INICIO DE FUNÇÃO DE [Logout]; esta função faz [O encerramento da sessão no Supabase e redireciona para a página inicial] */
@@ -183,4 +238,5 @@
         window.addEventListener('DOMContentLoaded', initAdminPage);
     </script>
 </body>
+
 </html>
