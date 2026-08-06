@@ -33,7 +33,9 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
             </path>
         </svg>
-        <h2 id="ver-acesso" class="font-teko text-4xl font-bold text-white tracking-wider">Verificando acesso...</h2>
+        <h2 id="ver-acesso"
+            class="font-teko text-4xl font-bold text-white tracking-wider transition-colors duration-300">Verificando
+            acesso...</h2>
     </div>
 
 
@@ -187,12 +189,12 @@
             }
         }
 
-        /* INICIO DE FUNÇÃO DE [Proteção de Rota e Inicialização]; esta função faz [A exibição do overlay, checagem da sessão ativa com timeout de 3s para redirecionamento ao index ou liberação de acesso simultânea ao carregamento dos dados] */
+        /* INICIO DE FUNÇÃO DE [Proteção de Rota e Inicialização]; esta função faz [A exibição do overlay de carregamento, checa a sessão no Supabase, aguarda o complemento de 3 segundos em 'Verificando', altera para 'ACESSO NEGADO' se offline aguardando mais 3 segundos antes do redirecionamento, ou libera o acesso aos dados imediatamente após o carregamento se logado] */
         async function initAdminPage() {
             const startTime = Date.now();
             const overlay = document.getElementById('auth-overlay');
+            const statusText = document.getElementById('ver-acesso');
             const maxWait = 3000;
-            const sairbtn = document.getElementById('btn-logout')
 
             const { data: { session } } = await supabaseClient.auth.getSession();
 
@@ -202,7 +204,11 @@
             if (!session) {
                 console.log("offline");
                 setTimeout(() => {
-                    document.getElementById("ver-acesso").innerHTML = "ACESSO NEGADO";
+                    if (statusText) {
+                        statusText.innerHTML = "ACESSO NEGADO";
+                        statusText.classList.replace('text-white', 'text-red-500');
+                    }
+
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 3000);
@@ -215,7 +221,6 @@
                 setTimeout(() => overlay.classList.add('hidden'), 500);
             });
 
-            // sairbtn.classList.remove('hidden');
             const timeoutPromise = new Promise(resolve => {
                 setTimeout(() => {
                     overlay.classList.add('opacity-0');
