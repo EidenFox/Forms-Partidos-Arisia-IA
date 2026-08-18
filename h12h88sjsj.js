@@ -1,7 +1,7 @@
-const encerrado = false;
+const encerrado = true;
 
         const supabaseUrl = 'https://gaejvymnzwvhwkehopoi.supabase.co';
-        const supabaseKey = 'sb_publishable_hx5Squj4TZDF8P8TaXp7uw_etpAVIGc'; // Insira sua chave publishable aqui
+        const supabaseKey = 'sb_publishable_hx5Squj4TZDF8P8TaXp7uw_etpAVIGc';
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         const closedMessage = document.getElementById('closed-message');
